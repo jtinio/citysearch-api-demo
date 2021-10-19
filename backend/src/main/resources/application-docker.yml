@@ -1,0 +1,4 @@
+spring:
+  datasource:
+    # This db name is defined in the docker-compose.yml which is the name of the postgresql server
+    url: jdbc:postgresql://db:5432/postgres

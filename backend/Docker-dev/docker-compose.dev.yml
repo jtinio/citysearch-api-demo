@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:12.6
+    restart: always
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: incorrect
+      PGDATA: /var/lib/postgresql/data
+    ports:
+      - "5499:5432"
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: test@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: incorrect
+      PGADMIN_LISTEN_PORT: 80
+    ports:
+      - "8099:80"
+    links:
+      - "db:pgsql-server"
+
+

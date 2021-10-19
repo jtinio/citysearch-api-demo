@@ -1,0 +1,57 @@
+spring:
+  profiles:
+    active: @spring.profiles.active@
+  data:
+    rest:
+      max-page-size: 100
+  datasource:
+    url: jdbc:postgresql://localhost:5499/postgres
+    username: postgres
+    password: incorrect
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      connectionTimeout: 30000
+      idleTimeout: 30000
+      maxLifetime: 2000000
+      maximumPoolSize: 20
+      minimumIdle: 5
+      poolName: SpringBootJPAHikariCP
+    platform: postgres
+    driverClassName: org.postgresql.Driver
+  jackson:
+    default-property-inclusion: non_null
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        globally_quoted_identifiers: true
+        temp:
+          use_jdbc_metadata_defaults: false
+        format_sql: true
+        generate_statistics: true
+    show-sql: true
+  liquibase:
+    change-log: classpath:db/changelog/changelog-master.xml
+server:
+  servlet:
+    context-path: /api
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+logging:
+  file:
+    name: logs/application-debug.log
+  pattern:
+    console: "%d %-5level %logger : %msg%n"
+    file: "%d %-5level [%thread] %logger : %msg%n"
+  level:
+    org.springframework.web: ERROR
+    com.phasemargin: DEBUG
+    org.hibernate: ERROR

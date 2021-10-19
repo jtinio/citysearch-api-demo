@@ -1,0 +1,38 @@
+<div class="wrapper">
+  <h2>
+    City Search
+  </h2>
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="Search City" [(ngModel)]="selectedCity" [matAutocomplete]="auto"
+      [formControl]="searchCitiesCtrl" placeholder="Min 3 Characters Ex. Los">
+    <button *ngIf="selectedCity" matSuffix mat-icon-button aria-label="Clear" (click)="clearSelection()">
+      <mat-icon>close</mat-icon>
+    </button>
+    <mat-autocomplete [panelWidth]="400" #auto="matAutocomplete" (optionSelected)="onSelected()"
+      [displayWith]="displayWith">
+      <mat-option *ngIf="isLoading" class="is-loading">Loading...</mat-option>
+      <ng-container *ngIf="!isLoading">
+        <mat-option *ngFor="let city of filteredCities" [value]="city">
+          <span><b>{{city.name}}</b></span>
+        </mat-option>
+      </ng-container>
+    </mat-autocomplete>
+  </mat-form-field>
+
+  <br>
+
+  <ng-container *ngIf="errorMsg; else elseTemplate">
+    {{errorMsg}}
+  </ng-container>
+  <ng-template #elseTemplate>
+    <div class="city-details" *ngIf="selectedCity?.name">
+      <div>
+        <h3>Selected Value: {{selectedCity?.name}}</h3>
+        <ul>
+          <li>Name: {{selectedCity?.name}}</li>
+        </ul>
+      </div>
+    </div>
+  </ng-template>
+
+</div>

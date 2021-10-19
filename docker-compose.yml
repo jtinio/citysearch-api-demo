@@ -1,0 +1,37 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:12.6
+    restart: always
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: incorrect
+      PGDATA: /var/lib/postgresql/data
+    ports:
+      - "5499:5432"
+
+  web-api:
+    build:
+      context: ./backend
+      dockerfile: ./Dockerfile
+    image: jldemo/city-api
+    container_name: city-api
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+
+  angular-app:
+    build:
+      context: ./frontend
+      dockerfile: ./Dockerfile
+    image: jldemo/angular-app
+    container_name: ang-app
+    ports:
+      - "80:80"
+    depends_on:
+      - web-api
+
+
