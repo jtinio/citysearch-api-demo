@@ -5,7 +5,7 @@ This is a simple web app that search a city by prefix(LIKE string%), suffix(LIKE
 ### Cloning Repository
 ***
 ```
-
+git clone https://github.com/jtinio/citysearch-api-demo.git
 ```
 
 ### Running application using docker
