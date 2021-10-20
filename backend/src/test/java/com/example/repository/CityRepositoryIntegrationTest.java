@@ -19,43 +19,43 @@ public class CityRepositoryIntegrationTest extends BaseRepositoryTest{
     @Test
     public void testStartsWithNoResult()
     {
-        List<City> results = cityRepository.findByNameStartsWithIgnoreCaseOrderByNameAsc("1");
+        List<String> results = this.cityRepository.findByNameStartsWithIgnoreCaseOrderByNameAsc("1");
         assertEquals(0, results.size());
     }
 
     @Test
     public void testContainsNoResult()
     {
-        List<City> results = cityRepository.findByNameContainsIgnoreCaseOrderByNameAsc("1");
+        List<String> results = this.cityRepository.findByNameContainsIgnoreCaseOrderByNameAsc("1");
         assertEquals(0, results.size());
     }
 
     @Test
     public void testEndsWithNoResult()
     {
-        List<City> results = cityRepository.findByNameEndsWithIgnoreCaseOrderByNameAsc("1");
+        List<String> results = this.cityRepository.findByNameEndsWithIgnoreCaseOrderByNameAsc("1");
         assertEquals(0, results.size());
     }
 
     @Test
     public void testStartsWith()
     {
-        List<City> results = cityRepository.findByNameStartsWithIgnoreCaseOrderByNameAsc("Los");
-        assertEquals(27, results.size());
+        List<String> results = this.cityRepository.findByNameStartsWithIgnoreCaseOrderByNameAsc("Los".toUpperCase());
+        assertEquals(22, results.size());
     }
 
     @Test
     public void testContains()
     {
-        List<City> results = cityRepository.findByNameContainsIgnoreCaseOrderByNameAsc("Los");
-        assertEquals(49, results.size());
+        List<String> results = this.cityRepository.findByNameContainsIgnoreCaseOrderByNameAsc("Los".toUpperCase());
+        assertEquals(42, results.size());
     }
 
     @Test
     public void testEndsWith()
     {
-        List<City> results = cityRepository.findByNameEndsWithIgnoreCaseOrderByNameAsc("York");
-        assertEquals(14, results.size());
+        List<String> results = this.cityRepository.findByNameEndsWithIgnoreCaseOrderByNameAsc("York".toUpperCase());
+        assertEquals(5, results.size());
     }
 
 }

@@ -19,6 +19,7 @@ export class AppComponent implements OnInit {
   isLoading = false;
   errorMsg!: string;
   minLengthTerm = 3;
+  searchedCity: any = "";
   selectedCity: any = "";
 
   constructor(
@@ -26,15 +27,16 @@ export class AppComponent implements OnInit {
   ) { }
 
   onSelected() {
+    this.selectedCity = this.searchedCity;
     console.log(this.selectedCity);
-    this.selectedCity = this.selectedCity;
   }
 
   displayWith(value: any) {
-    return value?.Title;
+    return value;
   }
 
   clearSelection() {
+    this.searchedCity = "";
     this.selectedCity = "";
     this.filteredCities = [];
   }
@@ -62,7 +64,7 @@ export class AppComponent implements OnInit {
       )
       .subscribe((data: any) => {
         this.errorMsg = "";
-        this.filteredCities = data;
+        this.filteredCities = data.result;
         console.log(this.filteredCities);
       });
   }

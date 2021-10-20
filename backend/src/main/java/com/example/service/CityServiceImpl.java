@@ -1,32 +1,33 @@
 package com.example.service;
 
 import com.example.commons.SearchLikeFlag;
-import com.example.model.City;
+import com.example.model.dto.CitySearchResultDto;
 import com.example.repository.CityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
-import java.util.List;
 
 @RequiredArgsConstructor
 @Service
 public class CityServiceImpl implements CityService{
 
+    private final CitySearchResultDto EMPTY_CITY_SEARCH_RESULT_DTO = new CitySearchResultDto(Collections.emptyList());
+
     private final CityRepository cityRepository;
 
     @Override
-    public List<City> getCitiesByName(final String name, SearchLikeFlag searchLikeFlag) {
+    public CitySearchResultDto getCitiesByName(final String name, SearchLikeFlag searchLikeFlag) {
         if(name == null || name.isBlank()) {
-            return Collections.emptyList();
+            return EMPTY_CITY_SEARCH_RESULT_DTO;
         }
         switch (searchLikeFlag) {
             case PREFIX:
-                return this.cityRepository.findByNameStartsWithIgnoreCaseOrderByNameAsc(name);
+                return new CitySearchResultDto(this.cityRepository.findByNameStartsWithIgnoreCaseOrderByNameAsc(name.toUpperCase()));
             case CONTAINS:
-                return this.cityRepository.findByNameContainsIgnoreCaseOrderByNameAsc(name);
+                return new CitySearchResultDto(this.cityRepository.findByNameContainsIgnoreCaseOrderByNameAsc(name.toUpperCase()));
             default:
-                return this.cityRepository.findByNameEndsWithIgnoreCaseOrderByNameAsc(name);
+                return new CitySearchResultDto(this.cityRepository.findByNameEndsWithIgnoreCaseOrderByNameAsc(name.toUpperCase()));
         }
     }
 

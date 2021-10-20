@@ -2,6 +2,7 @@ package com.example.service.unit;
 
 import com.example.commons.SearchLikeFlag;
 import com.example.model.City;
+import com.example.model.dto.CitySearchResultDto;
 import com.example.repository.CityRepository;
 import com.example.service.CityService;
 import com.example.service.CityServiceImpl;
@@ -24,8 +25,8 @@ public class CityServiceUnitTest {
     private CityRepository cityRepository;
     private CityService cityService;
 
-    private final City LA_CITY = new City("Los Angeles");
-    private final City NEW_YORK_CITY = new City("New York");
+    private final List<String> LA_CITIES = Arrays.asList("Los Angeles");
+    private final List<String> NEW_YORK_CITIES = Arrays.asList("New York");
 
     @Before
     public void setUp(){
@@ -40,10 +41,10 @@ public class CityServiceUnitTest {
                 .thenReturn(Collections.emptyList());
 
         //act
-        List<City> cityList = this.cityService.getCitiesByName("", SearchLikeFlag.PREFIX);
+        final CitySearchResultDto citySearchResultDto = this.cityService.getCitiesByName("", SearchLikeFlag.PREFIX);
 
         //assert
-        assertEquals(0, cityList.size());
+        assertEquals(0, citySearchResultDto.getResult().size());
         verify(this.cityRepository, never())
                 .findByNameStartsWithIgnoreCaseOrderByNameAsc(any());
         verify(this.cityRepository, never())
@@ -59,10 +60,10 @@ public class CityServiceUnitTest {
                 .thenReturn(Collections.emptyList());
 
         //act
-        List<City> cityList = this.cityService.getCitiesByName("", SearchLikeFlag.CONTAINS);
+        final CitySearchResultDto citySearchResultDto = this.cityService.getCitiesByName("", SearchLikeFlag.CONTAINS);
 
         //assert
-        assertEquals(0, cityList.size());
+        assertEquals(0, citySearchResultDto.getResult().size());
         verify(this.cityRepository, never())
                 .findByNameStartsWithIgnoreCaseOrderByNameAsc(any());
         verify(this.cityRepository, never())
@@ -78,10 +79,10 @@ public class CityServiceUnitTest {
                 .thenReturn(Collections.emptyList());
 
         //act
-        List<City> cityList = this.cityService.getCitiesByName("", SearchLikeFlag.SUFFIX);
+        final CitySearchResultDto citySearchResultDto = this.cityService.getCitiesByName("", SearchLikeFlag.SUFFIX);
 
         //assert
-        assertEquals(0, cityList.size());
+        assertEquals(0, citySearchResultDto.getResult().size());
         verify(this.cityRepository, never())
                 .findByNameStartsWithIgnoreCaseOrderByNameAsc(any());
         verify(this.cityRepository, never())
@@ -97,10 +98,10 @@ public class CityServiceUnitTest {
                 .thenReturn(Collections.emptyList());
 
         //act
-        List<City> cityList = this.cityService.getCitiesByName("Q", SearchLikeFlag.PREFIX);
+        final CitySearchResultDto citySearchResultDto = this.cityService.getCitiesByName("Q", SearchLikeFlag.PREFIX);
 
         //assert
-        assertEquals(0, cityList.size());
+        assertEquals(0, citySearchResultDto.getResult().size());
         verify(this.cityRepository, times(1))
                 .findByNameStartsWithIgnoreCaseOrderByNameAsc(any());
     }
@@ -112,10 +113,10 @@ public class CityServiceUnitTest {
                 .thenReturn(Collections.emptyList());
 
         //act
-        List<City> cityList = this.cityService.getCitiesByName("Q", SearchLikeFlag.CONTAINS);
+        final CitySearchResultDto citySearchResultDto = this.cityService.getCitiesByName("Q", SearchLikeFlag.CONTAINS);
 
         //assert
-        assertEquals(0, cityList.size());
+        assertEquals(0, citySearchResultDto.getResult().size());
         verify(this.cityRepository, times(1))
                 .findByNameContainsIgnoreCaseOrderByNameAsc(any());
     }
@@ -127,10 +128,10 @@ public class CityServiceUnitTest {
                 .thenReturn(Collections.emptyList());
 
         //act
-        List<City> cityList = this.cityService.getCitiesByName("Q", SearchLikeFlag.SUFFIX);
+        final CitySearchResultDto citySearchResultDto = this.cityService.getCitiesByName("Q", SearchLikeFlag.SUFFIX);
 
         //assert
-        assertEquals(0, cityList.size());
+        assertEquals(0, citySearchResultDto.getResult().size());
         verify(this.cityRepository, times(1))
                 .findByNameEndsWithIgnoreCaseOrderByNameAsc(any());
     }
@@ -139,14 +140,14 @@ public class CityServiceUnitTest {
     public void givenSearchCityNameByPrefixReturnListOfCities(){
         //arrange
         when(this.cityRepository.findByNameStartsWithIgnoreCaseOrderByNameAsc(any()))
-                .thenReturn(Arrays.asList(LA_CITY));
+                .thenReturn(LA_CITIES);
 
         //act
-        List<City> cityList = this.cityService.getCitiesByName("Los", SearchLikeFlag.PREFIX);
+        final CitySearchResultDto citySearchResultDto = this.cityService.getCitiesByName("Los", SearchLikeFlag.PREFIX);
 
         //assert
-        assertEquals(1, cityList.size());
-        assertEquals(cityList.get(0), LA_CITY);
+        assertEquals(1, citySearchResultDto.getResult().size());
+        assertEquals(citySearchResultDto.getResult().get(0), LA_CITIES.get(0));
         verify(this.cityRepository, times(1))
                 .findByNameStartsWithIgnoreCaseOrderByNameAsc(any());
     }
@@ -155,14 +156,14 @@ public class CityServiceUnitTest {
     public void givenSearchCityNameByContainsReturnListOfCities(){
         //arrange
         when(this.cityRepository.findByNameContainsIgnoreCaseOrderByNameAsc(any()))
-                .thenReturn(Arrays.asList(LA_CITY));
+                .thenReturn(LA_CITIES);
 
         //act
-        List<City> cityList = this.cityService.getCitiesByName("Ange", SearchLikeFlag.CONTAINS);
+        final CitySearchResultDto citySearchResultDto = this.cityService.getCitiesByName("Ange", SearchLikeFlag.CONTAINS);
 
         //assert
-        assertEquals(1, cityList.size());
-        assertEquals(cityList.get(0), LA_CITY);
+        assertEquals(1, citySearchResultDto.getResult().size());
+        assertEquals(citySearchResultDto.getResult().get(0), LA_CITIES.get(0));
         verify(this.cityRepository, times(1))
                 .findByNameContainsIgnoreCaseOrderByNameAsc(any());
     }
@@ -171,14 +172,14 @@ public class CityServiceUnitTest {
     public void givenSearchCityNameBySuffixReturnListOfCities(){
         //arrange
         when(this.cityRepository.findByNameEndsWithIgnoreCaseOrderByNameAsc(any()))
-                .thenReturn(Arrays.asList(NEW_YORK_CITY));
+                .thenReturn(NEW_YORK_CITIES);
 
         //act
-        List<City> cityList = this.cityService.getCitiesByName("York", SearchLikeFlag.SUFFIX);
+        final CitySearchResultDto citySearchResultDto = this.cityService.getCitiesByName("York", SearchLikeFlag.SUFFIX);
 
         //assert
-        assertEquals(1, cityList.size());
-        assertEquals(cityList.get(0), NEW_YORK_CITY);
+        assertEquals(1, citySearchResultDto.getResult().size());
+        assertEquals(citySearchResultDto.getResult().get(0), NEW_YORK_CITIES.get(0));
         verify(this.cityRepository, times(1))
                 .findByNameEndsWithIgnoreCaseOrderByNameAsc(any());
     }

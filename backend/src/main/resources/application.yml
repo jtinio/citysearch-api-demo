@@ -1,9 +1,6 @@
 spring:
   profiles:
     active: @spring.profiles.active@
-  data:
-    rest:
-      max-page-size: 100
   datasource:
     url: jdbc:postgresql://localhost:5499/postgres
     username: postgres
@@ -52,6 +49,8 @@ logging:
     console: "%d %-5level %logger : %msg%n"
     file: "%d %-5level [%thread] %logger : %msg%n"
   level:
-    org.springframework.web: ERROR
-    com.phasemargin: DEBUG
-    org.hibernate: ERROR
+    org:
+      springframework:
+        web: ERROR
+      hibernate:
+        type: trace

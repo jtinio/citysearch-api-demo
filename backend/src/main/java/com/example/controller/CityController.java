@@ -2,7 +2,7 @@ package com.example.controller;
 
 import com.example.commons.SearchLikeFlag;
 import com.example.commons.exceptions.InvalidRestRequestException;
-import com.example.model.City;
+import com.example.model.dto.CitySearchResultDto;
 import com.example.service.CityService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -29,8 +29,8 @@ public class CityController {
             @ApiResponse(code = 400, message = "Invalid flag value" )
     })
     @GetMapping("/search")
-    public List<City> searchCity(final @RequestParam(name ="flag", required = false, defaultValue = "CONTAINS") String flag,
-                                 final @RequestParam(name ="name", defaultValue = "") String name) {
+    public CitySearchResultDto searchCity(final @RequestParam(name ="flag", required = false, defaultValue = "CONTAINS") String flag,
+                                          final @RequestParam(name ="name", defaultValue = "") String name) {
         try {
             return this.cityService.getCitiesByName(name, SearchLikeFlag.valueOf(flag));
         } catch(Exception exception) {

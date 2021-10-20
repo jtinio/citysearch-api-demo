@@ -15,7 +15,6 @@ import org.hibernate.annotations.DynamicUpdate;
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @ApiModel(description="All details about the city")

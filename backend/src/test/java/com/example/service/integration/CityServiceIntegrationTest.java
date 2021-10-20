@@ -3,6 +3,7 @@ package com.example.service.integration;
 import com.example.DemoApplication;
 import com.example.commons.SearchLikeFlag;
 import com.example.model.City;
+import com.example.model.dto.CitySearchResultDto;
 import com.example.repository.CityRepository;
 import com.example.service.CityService;
 import org.junit.After;
@@ -32,42 +33,42 @@ public class CityServiceIntegrationTest {
     @Test
     public void testEmptySearchCityNameByPrefixReturnNoResult()
     {
-        List<City> results = this.cityService.getCitiesByName("", SearchLikeFlag.PREFIX);
-        assertEquals(0, results.size());
+        final CitySearchResultDto citySearchResultDto = this.cityService.getCitiesByName("", SearchLikeFlag.PREFIX);
+        assertEquals(0, citySearchResultDto.getResult().size());
     }
 
     @Test
     public void testEmptySearchCityNameByContainsReturnNoResult()
     {
-        List<City> results = this.cityService.getCitiesByName("", SearchLikeFlag.CONTAINS);
-        assertEquals(0, results.size());
+        final CitySearchResultDto citySearchResultDto = this.cityService.getCitiesByName("", SearchLikeFlag.CONTAINS);
+        assertEquals(0, citySearchResultDto.getResult().size());
     }
 
     @Test
     public void testEmptySearchCityNameBySuffixReturnNoResult()
     {
-        List<City> results = this.cityService.getCitiesByName("", SearchLikeFlag.SUFFIX);
-        assertEquals(0, results.size());
+        final CitySearchResultDto citySearchResultDto = this.cityService.getCitiesByName("", SearchLikeFlag.SUFFIX);
+        assertEquals(0, citySearchResultDto.getResult().size());
     }
 
     @Test
     public void testSearchCityNameByPrefixReturnListOfCities()
     {
-        List<City> results = this.cityService.getCitiesByName("Los", SearchLikeFlag.PREFIX);
-        assertEquals(27, results.size());
+        final CitySearchResultDto citySearchResultDto = this.cityService.getCitiesByName("Los", SearchLikeFlag.PREFIX);
+        assertEquals(22, citySearchResultDto.getResult().size());
     }
 
     @Test
     public void testSearchCityNameByContainsReturnListOfCities()
     {
-        List<City> results = this.cityService.getCitiesByName("Los", SearchLikeFlag.CONTAINS);
-        assertEquals(49, results.size());
+        final CitySearchResultDto citySearchResultDto = this.cityService.getCitiesByName("Los", SearchLikeFlag.CONTAINS);
+        assertEquals(42, citySearchResultDto.getResult().size());
     }
 
     @Test
     public void testSearchCityNameBySuffixReturnListOfCities()
     {
-        List<City> results = this.cityService.getCitiesByName("York", SearchLikeFlag.SUFFIX);
-        assertEquals(14, results.size());
+        final CitySearchResultDto citySearchResultDto = this.cityService.getCitiesByName("York", SearchLikeFlag.SUFFIX);
+        assertEquals(5, citySearchResultDto.getResult().size());
     }
 }

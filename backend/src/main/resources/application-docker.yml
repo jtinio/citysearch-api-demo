@@ -2,3 +2,22 @@ spring:
   datasource:
     # This db name is defined in the docker-compose.yml which is the name of the postgresql server
     url: jdbc:postgresql://db:5432/postgres
+  jpa:
+    properties:
+      hibernate:
+        format_sql: false
+        generate_statistics: false
+    show-sql: false
+
+logging:
+  file:
+    name: logs/application-docker.log
+  pattern:
+    console: "%d %-5level %logger : %msg%n"
+    file: "%d %-5level [%thread] %logger : %msg%n"
+  level:
+    org:
+      springframework:
+        web: ERROR
+      hibernate:
+        type: ERROR

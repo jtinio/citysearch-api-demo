@@ -3,6 +3,7 @@ package com.example.controller.unit;
 import com.example.commons.SearchLikeFlag;
 import com.example.controller.CityController;
 import com.example.model.City;
+import com.example.model.dto.CitySearchResultDto;
 import com.example.service.CityService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,6 +17,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -29,11 +31,11 @@ public class CityControllerUnitTest {
     @Autowired
     private MockMvc mockMvc;
 
-    private final City LA_CITY = new City("Los Angeles");
-    private final City NEW_YORK_CITY = new City("New York");
+    private final List<String> LA_CITIES = Arrays.asList("Los Angeles");
+    private final List<String> NEW_YORK_CITIES = Arrays.asList("New York");
 
     @Test
-    public void PostSearchCityNameWithInvalidFlag() throws Exception{
+    public void testSearchCityNameWithInvalidFlag() throws Exception{
         //act
         mockMvc.perform(get("/city/search?name=Los&flag=TEST"))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
@@ -45,15 +47,15 @@ public class CityControllerUnitTest {
     }
 
     @Test
-    public void PostSearchCityNameWithEmptyName() throws Exception{
+    public void testSearchCityNameWithEmptyName() throws Exception{
         //arrange
         when(this.cityService.getCitiesByName("", SearchLikeFlag.CONTAINS))
-                .thenReturn(Collections.EMPTY_LIST);
+                .thenReturn(new CitySearchResultDto(Collections.emptyList()));
 
         //act
         mockMvc.perform(get("/city/search"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$",
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result",
                         org.hamcrest.Matchers.hasSize(0)))
                 .andDo(MockMvcResultHandlers.print());
 
@@ -63,10 +65,10 @@ public class CityControllerUnitTest {
     }
 
     @Test
-    public void PostSearchCityNameByPrefix() throws Exception{
+    public void testSearchCityNameByPrefix() throws Exception{
         //arrange
         when(this.cityService.getCitiesByName("Los", SearchLikeFlag.PREFIX))
-                .thenReturn(Arrays.asList(LA_CITY));
+                .thenReturn(new CitySearchResultDto(LA_CITIES));
 
         //act
         mockMvc.perform(get("/city/search?name=Los&flag=PREFIX"))
@@ -79,10 +81,10 @@ public class CityControllerUnitTest {
     }
 
     @Test
-    public void PostSearchCityNameByContains() throws Exception{
+    public void testSearchCityNameByContains() throws Exception{
         //arrange
         when(this.cityService.getCitiesByName("Ange", SearchLikeFlag.CONTAINS))
-                .thenReturn(Arrays.asList(LA_CITY));
+                .thenReturn(new CitySearchResultDto(LA_CITIES));
 
         //act
         mockMvc.perform(get("/city/search?name=Ange"))
@@ -95,10 +97,10 @@ public class CityControllerUnitTest {
     }
 
     @Test
-    public void PostSearchCityNameBySuffix() throws Exception{
+    public void testSearchCityNameBySuffix() throws Exception{
         //arrange
         when(this.cityService.getCitiesByName("York", SearchLikeFlag.SUFFIX))
-                .thenReturn(Arrays.asList(NEW_YORK_CITY));
+                .thenReturn(new CitySearchResultDto(NEW_YORK_CITIES));
 
         //act
         mockMvc.perform(get("/city/search?name=York&flag=SUFFIX"))
