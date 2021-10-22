@@ -1,6 +1,6 @@
 ### Introduction
 ***
-This is a simple web app that search a city by prefix(LIKE string%), suffix(LIKE %string) or combination(LIKE %string%)
+This is a simple web app that search US cities by prefix(LIKE string%), suffix(LIKE %string) or combination(LIKE %string%)
 
 ### Cloning Repository
 ***
